@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selenide.*;
 class DeliveryTest {
 
     @BeforeEach
-    void shouldCleanAndSetData(){
+    void shouldCleanAndSetData() {
         open("http://localhost:9999");
         $("[data-test-id='date'] [pattern='[0-9.]*']").sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] [pattern='[0-9.]*']").sendKeys(Keys.BACK_SPACE);
@@ -41,6 +41,48 @@ class DeliveryTest {
         $("[data-test-id=agreement]").click();
         $$("button").get(1).click();
         $(withText("Встреча успешно забронирована")).shouldBe(visible, Duration.ofSeconds(15));
+    }
+
+    @Test
+    void shouldRejectInvalidСity() {
+        $("[data-test-id=city] input").setValue("Сочи");
+        $("[data-test-id='name'] input").setValue("Иванов Василий");
+        $("[data-test-id='phone'] input").setValue("+79200000000");
+        $("[data-test-id=agreement]").click();
+        $$("button").get(1).click();
+        $(withText("Доставка в выбранный город недоступна")).shouldBe(visible);
+    }
+
+    @Test
+    void shouldRejectInvalidName() {
+        $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id='name'] input").setValue("Rachel");
+        $("[data-test-id='phone'] input").setValue("+79200000000");
+        $("[data-test-id=agreement]").click();
+        $$("button").get(1).click();
+        $(withText("Имя и Фамилия указаные неверно. " +
+                "Допустимы только русские буквы, пробелы и дефисы.")).shouldBe(visible);
+    }
+
+    @Test
+    void shouldRejectInvalidPhone() {
+        $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id='name'] input").setValue("Иванов Василий");
+        $("[data-test-id='phone'] input").setValue("89200000000");
+        $("[data-test-id=agreement]").click();
+        $$("button").get(1).click();
+        $(withText("Телефон указан неверно. Должно быть 11 цифр, " +
+                "например, +79012345678.")).shouldBe(visible);
+    }
+
+    @Test
+    void shouldRejectEmptyCheckBox() {
+        $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id='name'] input").setValue("Иванов Василий");
+        $("[data-test-id='phone'] input").setValue("+79200000000");
+        $$("button").get(1).click();
+        $(withText("Я соглашаюсь с условиями обработки и использования " +
+                "моих персональных данных")).shouldBe(visible);
     }
 
 }
