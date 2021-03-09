@@ -27,10 +27,10 @@ class DeliveryTest {
         $("[data-test-id='date'] [pattern='[0-9.]*']").sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] [pattern='[0-9.]*']").sendKeys(Keys.BACK_SPACE);
         Calendar c = new GregorianCalendar();
-        c.add(Calendar.DAY_OF_YEAR, 10); // увеличиваем на 4 дня от текущей даты
+        c.add(Calendar.DAY_OF_YEAR, 10); // увеличиваем на 10 дней от текущей даты
         SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy"); //придаем нужный формат дате
         String str = format1.format(c.getTime());
-        $("[data-test-id='date'] input").setValue(str);
+        $("[data-test-id='date'] input").setValue(str); // записываем дату в поле
     }
 
     @Test
@@ -40,7 +40,7 @@ class DeliveryTest {
         $("[data-test-id='phone'] input").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $$("button").get(1).click();
-        $(withText("Встреча успешно забронирована")).shouldBe(visible, Duration.ofSeconds(15));
+        $(withText("Встреча успешно забронирована")).shouldBe(visible, Duration.ofSeconds(14));
     }
 
     @Test
