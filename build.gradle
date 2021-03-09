@@ -7,7 +7,6 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
 
-// кодировка файлов (если используете русский язык в файлах)
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
@@ -19,9 +18,7 @@ dependencies {
     implementation 'junit:junit:4.12'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     testImplementation 'com.codeborne:selenide:5.19.0'
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
-    // https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.3.1'
 
 }
