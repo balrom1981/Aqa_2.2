@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
@@ -19,28 +18,39 @@ import static com.codeborne.selenide.Selenide.*;
 class DeliveryTest {
 
 
+    public String SetNewDate(int plusDays) {
+        return LocalDate.now().plusDays(plusDays).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
     @BeforeEach
-    void shouldCleanAndSetData() {
+    void shouldOpenWeb() {
         open("http://localhost:9999");
-        $("[data-test-id='date'] input")
-                .sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        String str = LocalDate.now().plusDays(10).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $("[data-test-id='date'] input").setValue(str);
+
     }
 
     @Test
     void shouldAcceptInformation() {
         $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id='date'] input")
+                .sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        String str = SetNewDate(10);
+        $("[data-test-id='date'] input").setValue(str);
         $("[data-test-id='name'] input").setValue("Иванов Василий");
         $("[data-test-id='phone'] input").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $$("button").get(1).click();
-        $(withText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
+        $(withText("Встреча успешно забронирована на"))
+                .shouldBe(visible, Duration.ofSeconds(15));
+        $(withText(str)).shouldBe(visible, Duration.ofSeconds(15));
     }
 
     @Test
     void shouldRejectInvalidСity() {
         $("[data-test-id=city] input").setValue("Сочи");
+        $("[data-test-id='date'] input")
+                .sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        String str = SetNewDate(10);
+        $("[data-test-id='date'] input").setValue(str);
         $("[data-test-id='name'] input").setValue("Иванов Василий");
         $("[data-test-id='phone'] input").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
@@ -51,6 +61,10 @@ class DeliveryTest {
     @Test
     void shouldRejectInvalidName() {
         $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id='date'] input")
+                .sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        String str = SetNewDate(10);
+        $("[data-test-id='date'] input").setValue(str);
         $("[data-test-id='name'] input").setValue("Rachel");
         $("[data-test-id='phone'] input").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
@@ -62,6 +76,10 @@ class DeliveryTest {
     @Test
     void shouldRejectInvalidPhone() {
         $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id='date'] input")
+                .sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        String str = SetNewDate(10);
+        $("[data-test-id='date'] input").setValue(str);
         $("[data-test-id='name'] input").setValue("Иванов Василий");
         $("[data-test-id='phone'] input").setValue("89200000000");
         $("[data-test-id=agreement]").click();
@@ -73,6 +91,10 @@ class DeliveryTest {
     @Test
     void shouldRejectEmptyCheckBox() {
         $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id='date'] input")
+                .sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        String str = SetNewDate(10);
+        $("[data-test-id='date'] input").setValue(str);
         $("[data-test-id='name'] input").setValue("Иванов Василий");
         $("[data-test-id='phone'] input").setValue("+79200000000");
         $$("button").get(1).click();
