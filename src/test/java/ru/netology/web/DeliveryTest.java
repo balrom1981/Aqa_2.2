@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
-import static com.codeborne.selenide.Condition.exactText;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
@@ -35,8 +35,7 @@ class DeliveryTest {
         $("[data-test-id='phone'] input").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $$("button").get(1).click();
-        String data = $("[data-test-id='date'] input").getCssValue("value");
-        $("[class='notification__content']").shouldHave(exactText(data), Duration.ofSeconds(14));
+        $(withText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
     }
 
     @Test
